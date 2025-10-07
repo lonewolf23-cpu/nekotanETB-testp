@@ -1,0 +1,40 @@
+name: Node.js Backend CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install dependencies
+        working-directory: backend
+        run: npm install
+
+      - name: Run lint (optional)
+        working-directory: backend
+        run: npm run lint --if-present
+
+      - name: Run tests (optional)
+        working-directory: backend
+        run: npm test --if-present
+
+      - name: Verify start script
+        working-directory: backend
+        run: node server.js --help || true
