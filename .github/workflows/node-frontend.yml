@@ -1,5 +1,15 @@
 name: Frontend CI/CD
 
+permissions:
+  contents: write
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+# ... rest of your workflow ...
+
 on:
   push:
     branches: [ "main" ]
